@@ -5,21 +5,28 @@ macropad.pixels.brightness = 0.1
 last_position = 0
 current_layer = 1
 max_layer = 4
+
 yellow = (255,255,0)
+red = (255, 0, 0)
+white = (255,255,255)
+green = (0, 255, 0)
+lightBlue = (0, 255, 255)
+blue = (0, 0, 255)
+pink = (255, 0, 255)
 
 while True:
-    macropad.pixels[0] = (255, 0, 0)
-    macropad.pixels[1] = (255, 0, 0)
-    macropad.pixels[2] = (255, 0, 0)
-    macropad.pixels[3] = (255, 0, 0)
-    macropad.pixels[4] = (255, 255, 255)
-    macropad.pixels[5] = (255, 255, 255)
-    macropad.pixels[6] = (255, 255, 255)
-    macropad.pixels[7] = (0, 255, 0)
-    macropad.pixels[8] = (255, 255, 255)
+    macropad.pixels[0] = red
+    macropad.pixels[1] = red
+    macropad.pixels[2] = red
+    macropad.pixels[3] = red
+    macropad.pixels[4] = white
+    macropad.pixels[5] = white
+    macropad.pixels[6] = white
+    macropad.pixels[7] = green
+    macropad.pixels[8] = white
     macropad.pixels[9] = yellow
-    macropad.pixels[10] = (0, 255, 255)
-    macropad.pixels[11] = (255, 0, 255)
+    macropad.pixels[10] = lightBlue
+    macropad.pixels[11] = pink
 
 
 
