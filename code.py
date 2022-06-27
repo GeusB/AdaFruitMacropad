@@ -16,9 +16,9 @@ while True:
     macropad.pixels[6] = (255, 255, 255)
     macropad.pixels[7] = (0, 255, 0)
     macropad.pixels[8] = (255, 255, 255)
-    macropad.pixels[9] = (0, 255, 0)
-    macropad.pixels[10] = (0, 255, 0)
-    macropad.pixels[11] = (0, 255, 0)
+    macropad.pixels[9] = (255, 255, 0)
+    macropad.pixels[10] = (0, 255, 255)
+    macropad.pixels[11] = (255, 0, 255)
 
 
 
