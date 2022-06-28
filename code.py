@@ -1,7 +1,11 @@
+import displayio
+import terminalio
+from adafruit_display_shapes.rect import Rect
+from adafruit_display_text import label
 from adafruit_macropad import MacroPad
 
 macropad = MacroPad()
-macropad.pixels.brightness = 0.1
+macropad.pixels.brightness = 0.2
 last_position = 0
 current_layer = 1
 max_layer = 4
@@ -19,18 +23,21 @@ while True:
     macropad.pixels[1] = red
     macropad.pixels[2] = red
     macropad.pixels[3] = red
-    macropad.pixels[4] = white
-    macropad.pixels[5] = white
-    macropad.pixels[6] = white
+    macropad.pixels[4] = pink
+    macropad.pixels[5] = lightBlue
+    macropad.pixels[6] = green
     macropad.pixels[7] = green
-    macropad.pixels[8] = white
+    macropad.pixels[8] = green
     macropad.pixels[9] = yellow
     macropad.pixels[10] = lightBlue
     macropad.pixels[11] = pink
 
-
-
-
+    text_lines = macropad.display_text()
+    text_lines[0].text = "Ctrl+X Ctrl+C Ctrl+V"    
+    text_lines[1].text = "Ctrl+A Ctrl+W Ctrl+D"
+    text_lines[2].text = "Prev   Pause  Next"
+    text_lines[3].text = "Left   Mute   Right"
+    text_lines.show()   
 
     key_event = macropad.keys.events.get()
 
@@ -47,23 +54,33 @@ while True:
                 macropad.keyboard.release_all()
             if key_event.key_number == 3:
                 macropad.keyboard.press(macropad.Keycode.CONTROL, macropad.Keycode.A)
+                macropad.keyboard.release_all() 
+            if key_event.key_number == 4:
+                macropad.keyboard.press(macropad.Keycode.CONTROL, macropad.Keycode.W)
+                macropad.keyboard.release_all()
+            if key_event.key_number == 5:
+                macropad.keyboard.press(macropad.Keycode.WINDOWS, macropad.Keycode.D)
                 macropad.keyboard.release_all()           
+            if key_event.key_number == 6:
+                macropad.consumer_control.send(
+                    macropad.ConsumerControlCode.SCAN_PREVIOUS_TRACK
+                )
             if key_event.key_number == 7:
                 macropad.consumer_control.send(
                     macropad.ConsumerControlCode.PLAY_PAUSE
                 )
-            if key_event.key_number == 9:
+            if key_event.key_number == 8:
                 macropad.consumer_control.send(
-                    macropad.ConsumerControlCode.VOLUME_DECREMENT
+                    macropad.ConsumerControlCode.SCAN_NEXT_TRACK
                 )
+            if key_event.key_number == 9:
+                macropad.mouse.move(x=-1)
             if key_event.key_number == 10:
                 macropad.consumer_control.send(
                     macropad.ConsumerControlCode.MUTE
                 )
             if key_event.key_number == 11:
-                macropad.consumer_control.send(
-                    macropad.ConsumerControlCode.VOLUME_INCREMENT
-                )
+                macropad.mouse.move(x=+1)
 
     macropad.encoder_switch_debounced.update()
 
@@ -73,14 +90,12 @@ while True:
     current_position = macropad.encoder
 
     if macropad.encoder > last_position:
-        macropad.mouse.move(x=+1)
         macropad.consumer_control.send(
             macropad.ConsumerControlCode.VOLUME_INCREMENT
         )
         last_position = current_position
 
-    if macropad.encoder < last_position:
-        macropad.mouse.move(x=-1)
+    if macropad.encoder < last_position:        
         macropad.consumer_control.send(
             macropad.ConsumerControlCode.VOLUME_DECREMENT
         )
