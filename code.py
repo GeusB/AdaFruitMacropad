@@ -21,9 +21,9 @@ while True:
     macropad.pixels[3] = red
     macropad.pixels[4] = white
     macropad.pixels[5] = white
-    macropad.pixels[6] = white
+    macropad.pixels[6] = green
     macropad.pixels[7] = green
-    macropad.pixels[8] = white
+    macropad.pixels[8] = green
     macropad.pixels[9] = yellow
     macropad.pixels[10] = lightBlue
     macropad.pixels[11] = pink
@@ -48,9 +48,17 @@ while True:
             if key_event.key_number == 3:
                 macropad.keyboard.press(macropad.Keycode.CONTROL, macropad.Keycode.A)
                 macropad.keyboard.release_all()           
+            if key_event.key_number == 6:
+                macropad.consumer_control.send(
+                    macropad.ConsumerControlCode.SCAN_PREVIOUS_TRACK
+                )
             if key_event.key_number == 7:
                 macropad.consumer_control.send(
                     macropad.ConsumerControlCode.PLAY_PAUSE
+                )
+            if key_event.key_number == 8:
+                macropad.consumer_control.send(
+                    macropad.ConsumerControlCode.SCAN_NEXT_TRACK
                 )
             if key_event.key_number == 9:
                 macropad.consumer_control.send(
