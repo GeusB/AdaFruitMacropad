@@ -61,17 +61,13 @@ while True:
                     macropad.ConsumerControlCode.SCAN_NEXT_TRACK
                 )
             if key_event.key_number == 9:
-                macropad.consumer_control.send(
-                    macropad.ConsumerControlCode.VOLUME_DECREMENT
-                )
+                macropad.mouse.move(x=-1)
             if key_event.key_number == 10:
                 macropad.consumer_control.send(
                     macropad.ConsumerControlCode.MUTE
                 )
             if key_event.key_number == 11:
-                macropad.consumer_control.send(
-                    macropad.ConsumerControlCode.VOLUME_INCREMENT
-                )
+                macropad.mouse.move(x=+1)
 
     macropad.encoder_switch_debounced.update()
 
@@ -81,14 +77,12 @@ while True:
     current_position = macropad.encoder
 
     if macropad.encoder > last_position:
-        macropad.mouse.move(x=+1)
         macropad.consumer_control.send(
             macropad.ConsumerControlCode.VOLUME_INCREMENT
         )
         last_position = current_position
 
-    if macropad.encoder < last_position:
-        macropad.mouse.move(x=-1)
+    if macropad.encoder < last_position:        
         macropad.consumer_control.send(
             macropad.ConsumerControlCode.VOLUME_DECREMENT
         )
