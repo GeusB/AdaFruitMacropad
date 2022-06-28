@@ -1,3 +1,7 @@
+import displayio
+import terminalio
+from adafruit_display_shapes.rect import Rect
+from adafruit_display_text import label
 from adafruit_macropad import MacroPad
 
 macropad = MacroPad()
@@ -28,9 +32,12 @@ while True:
     macropad.pixels[10] = lightBlue
     macropad.pixels[11] = pink
 
-
-
-
+    text_lines = macropad.display_text()
+    text_lines[0].text = "Ctrl+X Ctrl+C Ctrl+V"    
+    text_lines[1].text = "Ctrl+A"
+    text_lines[2].text = "Prev   Pause  Next"
+    text_lines[3].text = "Left   Mute   Right"
+    text_lines.show()   
 
     key_event = macropad.keys.events.get()
 
