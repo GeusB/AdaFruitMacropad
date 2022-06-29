@@ -5,7 +5,7 @@ from adafruit_display_text import label
 from adafruit_macropad import MacroPad
 
 macropad = MacroPad()
-macropad.pixels.brightness = 0.2
+macropad.pixels.brightness = 0.15
 last_position = 0
 current_layer = 1
 max_layer = 4
@@ -34,7 +34,7 @@ while True:
 
     text_lines = macropad.display_text()
     text_lines[0].text = "Ctrl+X Ctrl+C Ctrl+V"    
-    text_lines[1].text = "Ctrl+A Ctrl+W Ctrl+D"
+    text_lines[1].text = "WinTab Ctrl+W Ctrl+D"
     text_lines[2].text = "Prev   Pause  Next"
     text_lines[3].text = "Left   Mute   Right"
     text_lines.show()   
@@ -53,7 +53,7 @@ while True:
                 macropad.keyboard.press(macropad.Keycode.CONTROL, macropad.Keycode.V)
                 macropad.keyboard.release_all()
             if key_event.key_number == 3:
-                macropad.keyboard.press(macropad.Keycode.CONTROL, macropad.Keycode.A)
+                macropad.keyboard.press(macropad.Keycode.WINDOWS, macropad.Keycode.TAB)
                 macropad.keyboard.release_all() 
             if key_event.key_number == 4:
                 macropad.keyboard.press(macropad.Keycode.CONTROL, macropad.Keycode.W)
