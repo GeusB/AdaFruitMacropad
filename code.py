@@ -10,27 +10,29 @@ last_position = 0
 current_layer = 1
 max_layer = 4
 
-yellow = (255,255,0)
-red = (255, 0, 0)
-white = (255,255,255)
-green = (0, 255, 0)
-lightBlue = (0, 255, 255)
-blue = (0, 0, 255)
-pink = (255, 0, 255)
+class Colors:
+    Yellow = (255,255,0)
+    Orange = (255,100,0)
+    Red = (255, 0, 0)
+    White = (255,255,255)
+    Green = (0, 255, 0)
+    LightBlue = (0, 255, 255)
+    Blue = (0, 0, 255)
+    Pink = (255, 0, 255)    
 
 while True:
-    macropad.pixels[0] = red
-    macropad.pixels[1] = red
-    macropad.pixels[2] = red
-    macropad.pixels[3] = red
-    macropad.pixels[4] = pink
-    macropad.pixels[5] = lightBlue
-    macropad.pixels[6] = green
-    macropad.pixels[7] = green
-    macropad.pixels[8] = green
-    macropad.pixels[9] = yellow
-    macropad.pixels[10] = lightBlue
-    macropad.pixels[11] = pink
+    macropad.pixels[0] = Colors.Red
+    macropad.pixels[1] = Colors.Red
+    macropad.pixels[2] = Colors.Red
+    macropad.pixels[3] = Colors.Red
+    macropad.pixels[4] = Colors.Orange
+    macropad.pixels[5] = Colors.Blue
+    macropad.pixels[6] = Colors.Green
+    macropad.pixels[7] = Colors.Green
+    macropad.pixels[8] = Colors.Green
+    macropad.pixels[9] = Colors.Yellow
+    macropad.pixels[10] = Colors.LightBlue
+    macropad.pixels[11] = Colors.Pink
 
     text_lines = macropad.display_text()
     text_lines[0].text = "Ctrl+X Ctrl+C Ctrl+V"    
