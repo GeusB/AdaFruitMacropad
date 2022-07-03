@@ -140,26 +140,21 @@ while True:
         
     name = 'Layer 1'
     macros = [
-        # 1st row
-        (0x004000, '< Back', [Keycode.COMMAND, '[']),
-        (0x004000, 'Fwd >', [Keycode.COMMAND, ']']),
-        (0x400000, 'Up', [Keycode.SHIFT, ' ']),
-        # 2nd row
-        (0x202000, '< Tab', [Keycode.CONTROL, Keycode.SHIFT, Keycode.TAB]), 
-        (0x202000, 'Tab >', [Keycode.CONTROL, Keycode.TAB]),
-        (0x400000, 'Down', ' '),
-        # 3rd row
-        (0x000040, 'Reload', [Keycode.COMMAND, 'r']),
-        (0x000040, 'Home', [Keycode.COMMAND, 'H']),
-        (0x000040, 'Private', [Keycode.COMMAND, 'N']),
-        # 4th row
-        (0x000000, 'Ada', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.adafruit.com\n']), 
-        (0x800000, 'Digi', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.digikey.com\n']),
-        (0x101010, 'Hacks', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.hackaday.com\n']),
+        (Colors.Red, 'Ctrl+X', [Keycode.CONTROL, 'x']),
+        (Colors.Red, 'Ctrl+C', [Keycode.CONTROL, 'c']),
+        (Colors.Red, 'Ctrl+V', [Keycode.CONTROL, 'v']),
+        (Colors.Red, 'WinTab', [Keycode.WINDOWS, Keycode.TAB]), 
+        (Colors.Orange, 'Ctrl+W', [Keycode.CONTROL, 'W']),
+        (Colors.Blue, 'Ctrl+D', [Keycode.CONTROL, 'D']),
+        (Colors.Green, 'Reload', [Keycode.COMMAND, 'r']),
+        (Colors.Green, 'Home', [Keycode.COMMAND, 'H']),
+        (Colors.Green, 'Private', [Keycode.COMMAND, 'N']),
+        (Colors.Yellow, 'Ada', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.adafruit.com\n']), 
+        (Colors.LightBlue, 'Digi', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.digikey.com\n']),
+        (Colors.Pink, 'Hacks', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.hackaday.com\n']),
         # Encoder button
-        (0x000000, '', [Keycode.COMMAND, 'w']) # Close window/tab
+        (0x000000, '', [Keycode.COMMAND, 'w'])
     ]
-    # macropad = MacroPad() 
     macropad.display.auto_refresh = False 
     macropad.pixels.auto_write = False
 
@@ -194,7 +189,7 @@ while True:
     macropad.mouse.release_all() 
     macropad.stop_tone() 
     macropad.pixels.show() 
-    # macropad.display.refresh()
+    macropad.display.refresh()
 
     # key_event = macropad.keys.events.get()
 
