@@ -1,7 +1,7 @@
 import time
 import displayio
 import terminalio
-from adafruit_display_shapes.rect import Rect 
+from adafruit_display_shapes.rect import Rect
 from adafruit_display_text import label
 from adafruit_macropad import MacroPad
 from adafruit_hid.keycode import Keycode
@@ -14,79 +14,80 @@ last_position = 0
 current_layer = 0
 move = 0
 
+
 class layer:
-    def __init__(self, name, macros): 
-        self.name = name 
+    def __init__(self, name, macros):
+        self.name = name
         self.macros = macros
 
+
 class Colors:
-    Yellow = (255,255,0)
-    Orange = (255,100,0)
+    Yellow = (255, 255, 0)
+    Orange = (255, 100, 0)
     Red = (255, 0, 0)
-    White = (255,255,255)
+    White = (255, 255, 255)
     Green = (0, 255, 0)
     LightBlue = (0, 255, 255)
     Blue = (0, 0, 255)
-    Pink = (255, 0, 255)    
-    Black = (0,0,0)
+    Pink = (255, 0, 255)
+    Black = (0, 0, 0)
 
 
-# put macros in list, with name no switching, read from list depending on current_layer, use encoder to switch layers
-macro_list = []
-macro_list.append( layer('Home',[
-            (Colors.Red, 'Ctrl+X', [Keycode.CONTROL, 'x']),
-            (Colors.Red, 'Ctrl+C', [Keycode.CONTROL, 'c']),
-            (Colors.Red, 'Ctrl+V', [Keycode.CONTROL, 'v']),
-            (Colors.Red, 'WinTab', [Keycode.WINDOWS, Keycode.TAB]), 
-            (Colors.Orange, 'Ctrl+W', [Keycode.CONTROL, 'W']),
-            (Colors.Blue, 'Ctrl+D', [Keycode.CONTROL, 'D']),
-            (Colors.Green, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
-            (Colors.Green, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
-            (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
-            (Colors.Yellow, 'Next', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.adafruit.com\n']), 
-            (Colors.LightBlue, 'Mute', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.digikey.com\n']),
-            (Colors.Pink, 'Prev', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.hackaday.com\n']),
-            #encoder click
-            (0x000000, '', [Keycode.COMMAND, 'w'])
-        ] ) )
-macro_list.append( layer('Debug', [
-            (Colors.Red, 'Debug', [Keycode.F5]),
-            (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),
-            (Colors.Red, 'F9', [Keycode.F9]),
-            (Colors.Red, 'Step', [Keycode.F10]), 
-            (Colors.Orange, 'StepIn', [Keycode.F11]),
-            (Colors.Blue, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
-            (Colors.Green, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
-            (Colors.Green, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
-            (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
-            (Colors.Yellow, 'Tone', [{'tone':262}]), 
-            (Colors.LightBlue, 'Mute', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.digikey.com\n']),
-            (Colors.Pink, 'Prev', [Keycode.COMMAND, 'n', -Keycode.COMMAND, 'www.hackaday.com\n']),
-            # encoder click
-            (0x000000, '', [Keycode.WINDOWS, Keycode.TAB])
-        ] ))
+macro_array = []
+macro_array.append(layer('Home', [
+    (Colors.Red, 'Ctrl+X', [Keycode.CONTROL, 'x']),
+    (Colors.Red, 'Ctrl+C', [Keycode.CONTROL, 'c']),
+    (Colors.Red, 'Ctrl+V', [Keycode.CONTROL, 'v']),
+    (Colors.Red, 'WinTab', [Keycode.WINDOWS, Keycode.TAB]),
+    (Colors.Orange, 'Ctrl+W', [Keycode.CONTROL, 'W']),
+    (Colors.Blue, 'Ctrl+D', [Keycode.CONTROL, 'D']),
+    (Colors.Green, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
+    (Colors.Green, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
+    (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
+    (Colors.Yellow, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
+    (Colors.LightBlue, 'Mute', [[ConsumerControlCode.MUTE]]),
+    (Colors.Pink, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
+    (0x000000, '', [Keycode.COMMAND, 'w'])
+]))
+macro_array.append(layer('Debug', [
+    (Colors.Red, 'Debug', [Keycode.F5]),
+    (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),
+    (Colors.Red, 'F9', [Keycode.F9]),
+    (Colors.Red, 'Step', [Keycode.F10]),
+    (Colors.Orange, 'StepIn', [Keycode.F11]),
+    (Colors.Blue, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
+    (Colors.Green, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
+    (Colors.Green, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
+    (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
+    (Colors.Yellow, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
+    (Colors.LightBlue, 'Mute', [[ConsumerControlCode.MUTE]]),
+    (Colors.Pink, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
+    (0x000000, '', [Keycode.WINDOWS, Keycode.TAB])
+]))
+macro_array.append(layer('Test', [
+    (Colors.Red, 'Debug', [Keycode.F5]),
+    (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),
+    (Colors.Red, 'F9', [Keycode.F9]),
+    (Colors.Red, 'Step', [Keycode.F10]),
+    (Colors.Red, 'StepIn', [Keycode.F11]),
+    (Colors.Red, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
+    (Colors.Red, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
+    (Colors.Red, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
+    (Colors.Red, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
+    (Colors.Red, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
+    (Colors.Red, 'Mute', [[ConsumerControlCode.MUTE]]),
+    (Colors.Red, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
+    (0x000000, '', [Keycode.WINDOWS, Keycode.TAB])
+]))
 
-max_layer = len(macro_list) - 1
 
-last_encoder_switch = macropad.encoder_switch_debounced.pressed    
+max_layer = len(macro_array) - 1
+
+last_encoder_switch = macropad.encoder_switch_debounced.pressed
 
 while True:
-    #             if key_event.key_number == 9:
-    #                 if current_layer > 1:
-    #                     current_layer= current_layer - 1
-    #                 else:
-    #                     current_layer = max_layer
-    #             if key_event.key_number == 10:
-    #                 macropad.consumer_control.send(
-    #                     macropad.ConsumerControlCode.MUTE
-    #                 )
-    #             if key_event.key_number == 11:
-    #                 if current_layer < max_layer:
-    #                     current_layer = current_layer + 1
-    #                 else:
-    #                     current_layer = 1
-
-    #     macropad.encoder_switch_debounced.update()
+    # TODO: Key pressed = continue to do ...
+    # TODO: Cursor mover
 
     #     if macropad.encoder_switch_debounced.pressed:
     #         if move == 0:
@@ -98,27 +99,12 @@ while True:
     #         macropad.mouse.move(x=+1)
     #         macropad.mouse.move(x=-1)
     #         macropad.pixels[11] = Colors.Red
-            
+
     #     current_position = macropad.encoder
 
-    #     if macropad.encoder > last_position:
-    #         macropad.consumer_control.send(
-    #             macropad.ConsumerControlCode.VOLUME_INCREMENT
-    #         )
-    #         last_position = current_position
-
-    #     if macropad.encoder < last_position:        
-    #         macropad.consumer_control.send(
-    #             macropad.ConsumerControlCode.VOLUME_DECREMENT
-    #         )
-    #         last_position = current_position
-
-    
-
-
-    title = macro_list[current_layer].name
-    macros = macro_list[current_layer].macros
-    macropad.display.auto_refresh = False 
+    title = macro_array[current_layer].name
+    macros = macro_array[current_layer].macros
+    macropad.display.auto_refresh = False
     macropad.pixels.auto_write = False
 
     # display setup
@@ -126,45 +112,42 @@ while True:
     for key_index in range(12):
         x = key_index % 3
         y = key_index // 3
-        display_group.append(label.Label(terminalio.FONT, text='', color=Colors.White, anchored_position=((macropad.display.width - 1) * x /2, macropad.display.height - 1 -(3 - y) * 12), anchor_point=(x / 2, 1.0)))
-    display_group.append(Rect(0, 0, macropad.display.width, 12, fill=Colors.White)) 
-    display_group.append(label.Label(terminalio.FONT, text='', color=Colors.Black, anchored_position=(macropad.display.width//2, -2), anchor_point=(0.5, 0.0)))
+        display_group.append(label.Label(terminalio.FONT, text='', color=Colors.White, anchored_position=(
+            (macropad.display.width - 1) * x / 2, macropad.display.height - 1 - (3 - y) * 12), anchor_point=(x / 2, 1.0)))
+    display_group.append(
+        Rect(0, 0, macropad.display.width, 12, fill=Colors.White))
+    display_group.append(label.Label(terminalio.FONT, text='', color=Colors.Black, anchored_position=(
+        macropad.display.width//2, -2), anchor_point=(0.5, 0.0)))
     macropad.display.show(display_group)
 
     # display labels and set leds
-    display_group[13].text = title 
+    display_group[13].text = title
     for i in range(12):
-        if i < len(macros): 
+        if i < len(macros):
             macropad.pixels[i] = macros[i][0]
             display_group[i].text = macros[i][1]
-        else: 
+        else:
             macropad.pixels[i] = 0
             display_group[i].text = ''
-    macropad.keyboard.release_all() 
-    macropad.consumer_control.release() 
-    macropad.mouse.release_all() 
-    macropad.stop_tone() 
-    macropad.pixels.show() 
+    macropad.keyboard.release_all()
+    macropad.consumer_control.release()
+    macropad.mouse.release_all()
+    macropad.stop_tone()
+    macropad.pixels.show()
     macropad.display.refresh()
 
-    # WIP
     position = macropad.encoder
     if position != last_position:
-        # app_index = position % len(apps)
-        # apps[app_index].switch()
-
         if position > last_position:
             if current_layer < max_layer:
                 current_layer = current_layer + 1
             else:
-                current_layer = 0        
-
-        if position < last_position:        
+                current_layer = 0
+        if position < last_position:
             if current_layer > 0:
-                current_layer= current_layer - 1
+                current_layer = current_layer - 1
             else:
                 current_layer = max_layer
-
         last_position = position
 
     macropad.encoder_switch_debounced.update()
@@ -182,8 +165,6 @@ while True:
         key_number = event.key_number
         pressed = event.pressed
 
-    
-
     sequence = macros[key_number][2]
     if pressed:
         # 'sequence' is an arbitrary-length list, each item is one of:
@@ -193,7 +174,7 @@ while True:
         # String (e.g. "Foo"): corresponding keys pressed & released
         # List []: one or more Consumer Control codes (can also do float delay)
         # Dict {}: mouse buttons/motion (might extend in future)
-        if key_number < 12: # No pixel for encoder button
+        if key_number < 12:  # No pixel for encoder button
             macropad.pixels[key_number] = 0xFFFFFF
             macropad.pixels.show()
         for item in sequence:
@@ -247,6 +228,6 @@ while True:
                 elif 'tone' in item:
                     macropad.stop_tone()
         macropad.consumer_control.release()
-        if key_number < 12: # No pixel for encoder button
+        if key_number < 12:  # No pixel for encoder button
             macropad.pixels[key_number] = macros[key_number][0]
             macropad.pixels.show()
