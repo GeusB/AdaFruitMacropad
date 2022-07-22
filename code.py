@@ -10,7 +10,7 @@ from adafruit_hid.consumer_control_code import ConsumerControlCode
 
 macropad = MacroPad()
 macropad.pixels.brightness = 0.15
-last_position = 0
+encoder_last_position = 0
 current_layer = 0
 move = 0
 
@@ -32,7 +32,13 @@ class Colors:
     Pink = (255, 0, 255)
     Black = (0, 0, 0)
 
-
+# 'sequence' is an arbitrary-length list, each item is one of:
+# Positive integer (e.g. Keycode.KEYPAD_MINUS): key pressed
+# Negative integer: (absolute value) key released
+# Float (e.g. 0.25): delay in seconds
+# String (e.g. "Foo"): corresponding keys pressed & released
+# List []: one or more Consumer Control codes (can also do float delay)
+# Dict {}: mouse buttons/motion (might extend in future)
 macro_array = []
 macro_array.append(layer('Home', [
     (Colors.Red, 'Ctrl+X', [Keycode.CONTROL, 'x']),
@@ -88,6 +94,8 @@ last_encoder_switch = macropad.encoder_switch_debounced.pressed
 while True:
     # TODO: Key pressed = continue to do ...
     # TODO: Cursor mover
+    # TODO: Extract 12 (keycount)
+    # TODO: Cleanup max_layer - 1 stuff 
 
     #     if macropad.encoder_switch_debounced.pressed:
     #         if move == 0:
@@ -112,12 +120,9 @@ while True:
     for key_index in range(12):
         x = key_index % 3
         y = key_index // 3
-        display_group.append(label.Label(terminalio.FONT, text='', color=Colors.White, anchored_position=(
-            (macropad.display.width - 1) * x / 2, macropad.display.height - 1 - (3 - y) * 12), anchor_point=(x / 2, 1.0)))
-    display_group.append(
-        Rect(0, 0, macropad.display.width, 12, fill=Colors.White))
-    display_group.append(label.Label(terminalio.FONT, text='', color=Colors.Black, anchored_position=(
-        macropad.display.width//2, -2), anchor_point=(0.5, 0.0)))
+        display_group.append(label.Label(terminalio.FONT, text='', color=Colors.White, anchored_position=((macropad.display.width - 1) * x / 2, macropad.display.height - 1 - (3 - y) * 12), anchor_point=(x / 2, 1.0)))
+    display_group.append(Rect(0, 0, macropad.display.width, 12, fill=Colors.White))
+    display_group.append(label.Label(terminalio.FONT, text='', color=Colors.Black, anchored_position=(macropad.display.width//2, -2), anchor_point=(0.5, 0.0)))
     macropad.display.show(display_group)
 
     # display labels and set leds
@@ -136,19 +141,19 @@ while True:
     macropad.pixels.show()
     macropad.display.refresh()
 
-    position = macropad.encoder
-    if position != last_position:
-        if position > last_position:
+    encoder_current_position = macropad.encoder
+    if encoder_current_position != encoder_last_position:
+        if encoder_current_position > encoder_last_position:
             if current_layer < max_layer:
                 current_layer = current_layer + 1
             else:
                 current_layer = 0
-        if position < last_position:
+        if encoder_current_position < encoder_last_position:
             if current_layer > 0:
                 current_layer = current_layer - 1
             else:
                 current_layer = max_layer
-        last_position = position
+        encoder_last_position = encoder_current_position
 
     macropad.encoder_switch_debounced.update()
     encoder_switch = macropad.encoder_switch_debounced.pressed
@@ -166,16 +171,9 @@ while True:
         pressed = event.pressed
 
     sequence = macros[key_number][2]
-    if pressed:
-        # 'sequence' is an arbitrary-length list, each item is one of:
-        # Positive integer (e.g. Keycode.KEYPAD_MINUS): key pressed
-        # Negative integer: (absolute value) key released
-        # Float (e.g. 0.25): delay in seconds
-        # String (e.g. "Foo"): corresponding keys pressed & released
-        # List []: one or more Consumer Control codes (can also do float delay)
-        # Dict {}: mouse buttons/motion (might extend in future)
-        if key_number < 12:  # No pixel for encoder button
-            macropad.pixels[key_number] = 0xFFFFFF
+    if pressed:        
+        if key_number < 12:
+            macropad.pixels[key_number] = Colors.White
             macropad.pixels.show()
         for item in sequence:
             if isinstance(item, int):
@@ -228,6 +226,6 @@ while True:
                 elif 'tone' in item:
                     macropad.stop_tone()
         macropad.consumer_control.release()
-        if key_number < 12:  # No pixel for encoder button
+        if key_number < 12:
             macropad.pixels[key_number] = macros[key_number][0]
             macropad.pixels.show()
