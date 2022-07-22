@@ -11,7 +11,7 @@ from adafruit_hid.consumer_control_code import ConsumerControlCode
 macropad = MacroPad()
 macropad.pixels.brightness = 0.15
 encoder_last_position = 0
-current_layer = 0
+current_layer = 2
 move = 0
 
 
@@ -72,7 +72,7 @@ macro_array.append(layer('Debug', [
 ]))
 macro_array.append(layer('Test', [
     (Colors.Red, 'Debug', [Keycode.F5]),
-    (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),
+    (Colors.Red, 'Pull', ['git pull', Keycode.RETURN, -Keycode.RETURN]),
     (Colors.Red, 'F9', [Keycode.F9]),
     (Colors.Red, 'Step', [Keycode.F10]),
     (Colors.Red, 'StepIn', [Keycode.F11]),
@@ -96,6 +96,8 @@ while True:
     # TODO: Cursor mover
     # TODO: Extract 12 (keycount)
     # TODO: Cleanup max_layer - 1 stuff 
+    # TODO: Git ... + Enter/Return => Crash but seems to happen only when in bash
+
 
     #     if macropad.encoder_switch_debounced.pressed:
     #         if move == 0:
