@@ -11,7 +11,7 @@ from adafruit_hid.consumer_control_code import ConsumerControlCode
 macropad = MacroPad()
 macropad.pixels.brightness = 0.15
 encoder_last_position = 0
-current_layer = 2
+current_layer = 1
 move = 0
 
 
@@ -60,11 +60,11 @@ macro_array.append(layer('Debug', [
     (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),
     (Colors.Red, 'F9', [Keycode.F9]),
     (Colors.Red, 'Step', [Keycode.F10]),
-    (Colors.Orange, 'StepIn', [Keycode.F11]),
+    (Colors.Green, 'F12', [Keycode.F12]),
+    (Colors.Orange, 'StepIn', [Keycode.F11]),    
+    (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),    
+    (Colors.Green, 'Sh+F12', [[Keycode.SHIFT, Keycode.F12]]),
     (Colors.Blue, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
-    (Colors.Green, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
-    (Colors.Green, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
-    (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
     (Colors.Yellow, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
     (Colors.LightBlue, 'Mute', [[ConsumerControlCode.MUTE]]),
     (Colors.Pink, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
@@ -97,6 +97,7 @@ while True:
     # TODO: Extract 12 (keycount)
     # TODO: Cleanup max_layer - 1 stuff 
     # TODO: Git ... + Enter/Return => Crash but seems to happen only when in bash
+    # TODO: try to run function from macro_array and switch back to button press for switching layer => encoder press??
 
 
     #     if macropad.encoder_switch_debounced.pressed:
