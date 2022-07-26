@@ -92,14 +92,6 @@ max_layer = len(macro_array) - 1
 last_encoder_switch = macropad.encoder_switch_debounced.pressed
 
 while True:
-    # TODO: Key pressed = continue to do ...
-    # TODO: Cursor mover
-    # TODO: Extract 12 (keycount)
-    # TODO: Cleanup max_layer - 1 stuff 
-    # TODO: Git ... + Enter/Return => Crash but seems to happen only when in bash
-    # TODO: try to run function from macro_array and switch back to button press for switching layer => encoder press??
-
-
     #     if macropad.encoder_switch_debounced.pressed:
     #         if move == 0:
     #             move = 1
