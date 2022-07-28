@@ -57,8 +57,8 @@ macro_array.append(layer('Home', [
 ]))
 macro_array.append(layer('Debug', [
     (Colors.Red, 'Debug', [Keycode.F5]),
-    (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),
-    (Colors.Red, 'F9', [Keycode.F9]),
+    (Colors.Green, 'CtrlF12', [[Keycode.CONTROL, Keycode.F12]]),
+    (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),    
     (Colors.Red, 'Step', [Keycode.F10]),
     (Colors.Green, 'F12', [Keycode.F12]),
     (Colors.Orange, 'StepIn', [Keycode.F11]),    
@@ -66,7 +66,7 @@ macro_array.append(layer('Debug', [
     (Colors.Green, 'Sh+F12', [[Keycode.SHIFT, Keycode.F12]]),
     (Colors.Blue, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
     (Colors.Yellow, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
-    (Colors.LightBlue, 'Mute', [[ConsumerControlCode.MUTE]]),
+    (Colors.LightBlue, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
     (Colors.Pink, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
     (0x000000, '', [Keycode.WINDOWS, Keycode.TAB])
 ]))
