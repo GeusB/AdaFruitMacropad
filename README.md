@@ -1,13 +1,15 @@
 # AdaFruitMacropad
-# WIP for my Adafruit Macropad
+WIP
+A custom layered layout with macro/function for my Adafruit Macropad
 
-# stuff to try:
 
-# Key pressed = continue to do ...
-# Cursor mover
-# Extract 12 (keycount)
-# Cleanup max_layer - 1 stuff 
-# Git ... + Enter/Return => Crash but seems to happen only when in bash
-# try to run function from macro_array and switch back to button press for switching layer => encoder press??
-# clock in title
-# fix readme :-D
+# stuff I will to try change/implement:
+ Key pressed = continue to do the macro/keypress/...
+ Cursor mover
+ Extract 12 (keycount)
+ Cleanup max_layer - 1 stuff 
+ Git ... + Enter/Return => Crash but seems to happen only when in bash
+ Try to run function from macro_array 
+ Switch back to button press for switching layer => encoder press??
+ Clock in title
+ Fix readme :-D
