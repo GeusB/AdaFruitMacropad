@@ -1,7 +1,8 @@
 # AdaFruitMacropad
 WIP  
 A custom layered layout with macro/function for my Adafruit Macropad  
-loosely based on  [Adafruits samples](https://github.com/adafruit/Adafruit_Learning_System_Guides/blob/271b3fee5b3b15a8f029359891974102d6b57450/Macropad_Hotkeys/code.py "Adafruit Github")
+loosely based on
+[Adafruits samples](https://github.com/adafruit/Adafruit_Learning_System_Guides/blob/271b3fee5b3b15a8f029359891974102d6b57450/Macropad_Hotkeys/code.py "Adafruit Github")
 
 
 
@@ -11,6 +12,4 @@ loosely based on  [Adafruits samples](https://github.com/adafruit/Adafruit_Learn
  Extract 12 (keycount)  
  Cleanup max_layer - 1 stuff  
  Git ... + Enter/Return => Crash but seems to happen only when in bash   
- Clock in title  
- Fix readme :-D  
- Add reference and license info
+ Clock in title
