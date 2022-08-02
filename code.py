@@ -50,9 +50,9 @@ macro_array.append(layer('Home', [
     (Colors.Green, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
     (Colors.Green, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
     (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
-    (Colors.Yellow, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
-    (Colors.LightBlue, 'Mute', [[ConsumerControlCode.MUTE]]),
-    (Colors.Pink, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
+  (Colors.Yellow, 'Layer-', [{'func': "Decrement"}]),
+    (Colors.LightBlue, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
+    (Colors.Pink, 'Layer+', [{'func': "Increment"}]),
     (0x000000, '', [Keycode.COMMAND, 'w'])
 ]))
 macro_array.append(layer('Debug', [
@@ -65,24 +65,24 @@ macro_array.append(layer('Debug', [
     (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),    
     (Colors.Blue, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
     (Colors.Green, 'Sh+F12', [[Keycode.SHIFT, Keycode.F12]]),
-    (Colors.Yellow, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
+    (Colors.Yellow, 'Layer-', [{'func': "Decrement"}]),
     (Colors.LightBlue, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
-    (Colors.Pink, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
+    (Colors.Pink, 'Layer+', [{'func': "Increment"}]),
     (0x000000, '', [Keycode.WINDOWS, Keycode.TAB])
 ]))
 macro_array.append(layer('Test', [
     (Colors.Red, 'Debug', [Keycode.F5]),
-    (Colors.Red, 'Pull', ['git pull', Keycode.RETURN, -Keycode.RETURN]),
-    (Colors.Red, 'F9', [Keycode.F9]),
+    (Colors.Red, 'Incr', [{'func': "Increment"}]),
+    (Colors.Red, 'Decr', [{'func': "Decrement"}]),
     (Colors.Red, 'Step', [Keycode.F10]),
     (Colors.Red, 'StepIn', [Keycode.F11]),
     (Colors.Red, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
-    (Colors.Red, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
+    (Colors.Red, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),    
     (Colors.Red, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
-    (Colors.Red, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),
-    (Colors.Red, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
-    (Colors.Red, 'Mute', [[ConsumerControlCode.MUTE]]),
-    (Colors.Red, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
+    (Colors.Red, '<<', [[ConsumerControlCode.SCAN_PREVIOUS_TRACK]]),
+    (Colors.Red, 'Layer-', [{'func': "Decrement"}]),
+    (Colors.Red, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
+    (Colors.Red, 'Layer+', [{'func': "Increment"}]),
     (0x000000, '', [Keycode.WINDOWS, Keycode.TAB])
 ]))
 
@@ -140,15 +140,18 @@ while True:
     encoder_current_position = macropad.encoder
     if encoder_current_position != encoder_last_position:
         if encoder_current_position > encoder_last_position:
-            if current_layer < max_layer:
-                current_layer = current_layer + 1
-            else:
-                current_layer = 0
+            macropad.consumer_control.send(macropad.ConsumerControlCode.VOLUME_INCREMENT)
+            # if current_layer < max_layer:
+            #     current_layer = current_layer + 1
+            # else:
+            #     current_layer = 0
         if encoder_current_position < encoder_last_position:
-            if current_layer > 0:
-                current_layer = current_layer - 1
-            else:
-                current_layer = max_layer
+            macropad.consumer_control.send(
+                macropad.ConsumerControlCode.VOLUME_DECREMENT)
+            # if current_layer > 0:
+            #     current_layer = current_layer - 1
+            # else:
+            #     current_layer = max_layer
         encoder_last_position = encoder_current_position
 
     macropad.encoder_switch_debounced.update()
@@ -203,6 +206,17 @@ while True:
                         macropad.start_tone(item['tone'])
                     else:
                         macropad.stop_tone()
+                if 'func' in item:
+                    if item['func'] == "Increment":
+                        if current_layer < max_layer:
+                            current_layer = current_layer + 1
+                        else:
+                            current_layer = 0
+                    else:                      
+                        if current_layer > 0:
+                            current_layer = current_layer - 1
+                        else:
+                            current_layer = max_layer                    
                 elif 'play' in item:
                     macropad.play_file(item['play'])
     else:
