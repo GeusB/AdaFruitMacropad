@@ -56,15 +56,15 @@ macro_array.append(layer('Home', [
     (0x000000, '', [Keycode.COMMAND, 'w'])
 ]))
 macro_array.append(layer('Debug', [
-    (Colors.Red, 'Debug', [Keycode.F5]),
-    (Colors.Green, 'CtrlF12', [[Keycode.CONTROL, Keycode.F12]]),
-    (Colors.Red, 'Run', [Keycode.SHIFT, Keycode.F5]),    
+    (Colors.Red, 'Contin', [Keycode.F5]),
+    (Colors.Red, 'Debug', [Keycode.ALT, Keycode.F5]),    
+    (Colors.Green, 'CtrlF12', [[Keycode.CONTROL, Keycode.F12]]),    
     (Colors.Red, 'Step', [Keycode.F10]),
-    (Colors.Green, 'F12', [Keycode.F12]),
     (Colors.Orange, 'StepIn', [Keycode.F11]),    
+    (Colors.Green, 'F12', [Keycode.F12]),
     (Colors.Green, '>>', [[ConsumerControlCode.SCAN_NEXT_TRACK]]),    
-    (Colors.Green, 'Sh+F12', [[Keycode.SHIFT, Keycode.F12]]),
     (Colors.Blue, 'StepOut', [Keycode.SHIFT, Keycode.F11]),
+    (Colors.Green, 'Sh+F12', [[Keycode.SHIFT, Keycode.F12]]),
     (Colors.Yellow, 'Vol -', [[ConsumerControlCode.VOLUME_DECREMENT]]),
     (Colors.LightBlue, 'Pauze', [[ConsumerControlCode.PLAY_PAUSE]]),
     (Colors.Pink, 'Vol +', [[ConsumerControlCode.VOLUME_INCREMENT]]),
@@ -92,6 +92,7 @@ max_layer = len(macro_array) - 1
 last_encoder_switch = macropad.encoder_switch_debounced.pressed
 
 while True:
+
     #     if macropad.encoder_switch_debounced.pressed:
     #         if move == 0:
     #             move = 1
