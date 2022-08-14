@@ -9,6 +9,5 @@ loosely based on
 # Stuff I will to try change/implement:
  Key pressed = continue to do the macro/keypress/...  
  Cursor mover  
- Cleanup max_layer - 1 stuff  
  Git ... + Enter/Return => Crash but seems to happen only when in bash   
  Clock in title
