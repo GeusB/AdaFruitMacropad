@@ -13,6 +13,8 @@ macropad.pixels.brightness = 0.15
 encoder_last_position = 0
 current_layer = 1
 move = 0
+key_count = 12
+last_encoder_switch = macropad.encoder_switch_debounced.pressed
 
 
 class layer:
@@ -86,30 +88,37 @@ macro_array.append(layer('Test', [
     (0x000000, '', [Keycode.WINDOWS, Keycode.TAB])
 ]))
 
-
 max_layer = len(macro_array) - 1
 
-last_encoder_switch = macropad.encoder_switch_debounced.pressed
+def increment_layer(current_layer, max_layer):
+    if current_layer < max_layer:
+        current_layer = current_layer + 1
+    else:
+        current_layer = 0
+    return current_layer
 
-while True:
-    title = macro_array[current_layer].name
-    macros = macro_array[current_layer].macros
-    macropad.display.auto_refresh = False
-    macropad.pixels.auto_write = False
+def decrement_layer(current_layer, max_layer):
+    if current_layer > 0:
+        current_layer = current_layer - 1
+    else:
+        current_layer = max_layer
+    return current_layer
 
-    # display setup
+def display_setup(macropad, key_count, Colors):
     display_group = displayio.Group()
-    for key_index in range(12):
+    for key_index in range(key_count):
         x = key_index % 3
         y = key_index // 3
         display_group.append(label.Label(terminalio.FONT, text='', color=Colors.White, anchored_position=((macropad.display.width - 1) * x / 2, macropad.display.height - 1 - (3 - y) * 12), anchor_point=(x / 2, 1.0)))
     display_group.append(Rect(0, 0, macropad.display.width, 12, fill=Colors.White))
     display_group.append(label.Label(terminalio.FONT, text='', color=Colors.Black, anchored_position=(macropad.display.width//2, -2), anchor_point=(0.5, 0.0)))
     macropad.display.show(display_group)
+    return display_group
 
+def display_layer(macropad, key_count, title, macros, display_group):
     # display labels and set leds
     display_group[13].text = title
-    for i in range(12):
+    for i in range(key_count):
         if i < len(macros):
             macropad.pixels[i] = macros[i][0]
             display_group[i].text = macros[i][1]
@@ -123,6 +132,16 @@ while True:
     macropad.pixels.show()
     macropad.display.refresh()
 
+display_group = display_setup(macropad, key_count, Colors)
+
+while True:
+    title = macro_array[current_layer].name
+    macros = macro_array[current_layer].macros
+    macropad.display.auto_refresh = False
+    macropad.pixels.auto_write = False        
+    
+    display_layer(macropad, key_count, title, macros, display_group)
+
     encoder_current_position = macropad.encoder
     if encoder_current_position != encoder_last_position:
         if encoder_current_position > encoder_last_position:
@@ -135,9 +154,9 @@ while True:
     encoder_switch = macropad.encoder_switch_debounced.pressed
     if encoder_switch != last_encoder_switch:
         last_encoder_switch = encoder_switch
-        if len(macros) < 13:
+        if len(macros) < key_count + 1:
             continue
-        key_number = 12
+        key_number = key_count
         pressed = encoder_switch
     else:
         event = macropad.keys.events.get()
@@ -148,7 +167,7 @@ while True:
 
     sequence = macros[key_number][2]
     if pressed:        
-        if key_number < 12:
+        if key_number < key_count:
             macropad.pixels[key_number] = Colors.Red
             macropad.pixels.show()
         for item in sequence:
@@ -179,15 +198,9 @@ while True:
                                     item['wheel'] if 'wheel' in item else 0)               
                 if 'func' in item:
                     if item['func'] == "Increment":
-                        if current_layer < max_layer:
-                            current_layer = current_layer + 1
-                        else:
-                            current_layer = 0
-                    else:                      
-                        if current_layer > 0:
-                            current_layer = current_layer - 1
-                        else:
-                            current_layer = max_layer                    
+                        current_layer = increment_layer(current_layer, max_layer)
+                    if item['func'] == "Decrement":                      
+                        current_layer = decrement_layer(current_layer, max_layer)                    
                 elif 'play' in item:
                     macropad.play_file(item['play'])
     else:
@@ -207,7 +220,7 @@ while True:
                 elif 'tone' in item:
                     macropad.stop_tone()
         macropad.consumer_control.release()
-        if key_number < 12:
+        if key_number < key_count:
             macropad.pixels[key_number] = macros[key_number][0]
             macropad.pixels.show()
 
