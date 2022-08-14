@@ -149,7 +149,7 @@ while True:
     sequence = macros[key_number][2]
     if pressed:        
         if key_number < 12:
-            macropad.pixels[key_number] = Colors.White
+            macropad.pixels[key_number] = Colors.Red
             macropad.pixels.show()
         for item in sequence:
             if isinstance(item, int):
